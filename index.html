@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería de 7 Imágenes Locales</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e1e5eb;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitulo {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+        
+        .instrucciones {
+            background-color: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        
+        .instrucciones h3 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .instrucciones code {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .imagen-contenedor {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 350px;
+        }
+        
+        .imagen-contenedor:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .imagen {
+            width: 100%;
+            height: 250px;
+            /* CAMBIO IMPORTANTE: Añadido para mostrar más de la imagen */
+            object-fit: contain; /* Cambiado de 'cover' a 'contain' para mostrar la imagen completa */
+            display: block;
+            background-color: #ecf0f1;
+            /* Espacio alrededor de la imagen dentro del contenedor */
+            padding: 15px; /* Añadido para crear espacio alrededor de la imagen */
+        }
+        
+        .descripcion {
+            padding: 15px;
+            text-align: center;
+            background-color: #f8f9fa;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .descripcion h3 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .descripcion p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .estado-imagen {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .cargada {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .no-cargada {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 30px;
+            border-top: 1px solid #e1e5eb;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .contador {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        .botones {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .boton {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .boton:hover {
+            background-color: #2980b9;
+        }
+        
+        @media (max-width: 768px) {
+            .galeria {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .botones {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .boton {
+                margin: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .galeria {
+                grid-template-columns: 1fr;
+            }
+            
+            body {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Galería de Imágenes Locales</h1>
+        <p class="subtitulo">Mostrando <span class="contador">7</span> imágenes desde tu computadora</p>
+    </header>
+    
+    <main>
+        <div class="instrucciones">
+            <h3>Instrucciones para usar imágenes locales:</h3>
+            <p>1. Guarda este archivo HTML en la misma carpeta donde están tus imágenes (C:\Users\dgonzalezfl\Desktop\DASHBOARDS-POWERBI)</p>
+            <p>2. Reemplaza los nombres de archivo en el código por los nombres reales de tus 7 imágenes</p>
+            <p>3. Asegúrate de que los nombres de archivo tengan las extensiones correctas (.jpg, .png, .gif, etc.)</p>
+            <p>4. Ejemplo de ruta relativa: <code>src="nombre-de-tu-imagen.jpg"</code></p>
+        </div>
+        
+        <div class="botones">
+            <button class="boton" onclick="probarTodasLasImagenes()">Verificar Estado de Imágenes</button>
+            <button class="boton" onclick="mostrarNombresNecesarios()">Ver Nombres Necesarios</button>
+        </div>
+        
+        <div class="galeria">
+            <!-- Imagen 1 - Reemplaza "imagen1.jpg" con el nombre real de tu imagen -->
+            <div class="imagen-contenedor">
+                <img src="Alan.jpg" alt="Dashboard 1" class="imagen" id="img1">
+                <div class="descripcion">
+                    <h3>Dashboard Power BI 1</h3>
+                    <p>Primer dashboard de análisis de datos.</p>
+                    <span class="estado-imagen no-cargada" id="estado1">Esperando imagen...</span>
+                </div>
+            </div>
+            
+            <!-- Imagen 2 - Reemplaza "imagen2.jpg" con el nombre real de tu imagen -->
+            <div class="imagen-contenedor">
+                <img src="Vic2.jpg" alt="Dashboard 2" class="imagen" id="img2">
+                <div class="descripcion">
+                    <h3>Dashboard Power BI 2</h3>
+                    <p>Segundo dashboard con métricas avanzadas.</p>
+                    <span class="estado-imagen no-cargada" id="estado2">Esperando imagen...</span>
+                </div>
+            </div>
+            
+            <!-- Imagen 3 - Reemplaza "imagen3.jpg" con el nombre real de tu imagen -->
+            <div class="imagen-contenedor">
+                <img src="Diana.jpg" alt="Dashboard 3" class="imagen" id="img3">
+                <div class="descripcion">
+                    <h3>Dashboard Power BI 3</h3>
+                    <p>Tercer dashboard de visualización de datos.</p>
+                    <span class="estado-imagen no-cargada" id="estado3">Esperando imagen...</span>
+                </div>
+            </div>
+            
+            <!-- Imagen 4 - Reemplaza "imagen4.jpg" con el nombre real de tu imagen -->
+            <div class="imagen-contenedor">
+                <img src="Magaly.jpg" alt="Dashboard 4" class="imagen" id="img4">
+                <div class="descripcion">
+                    <h3>Dashboard Power BI 4</h3>
+                    <p>Cuarto dashboard con KPIs importantes.</p>
+                    <span class="estado-imagen no-cargada" id="estado4">Esperando imagen...</span>
+                </div>
+            </div>
+            
+            <!-- Imagen 5 - Reemplaza "imagen5.jpg" con el nombre real de tu imagen -->
+            <div class="imagen-contenedor">
+                <img src="Carlos.jpg" alt="Dashboard 5" class="imagen" id="img5">
+                <div class="descripcion">
+                    <h3>Dashboard Power BI 5</h3>
+                    <p>Quinto dashboard de reportes ejecutivos.</p>
+                    <span class="estado-imagen no-cargada" id="estado5">Esperando imagen...</span>
+                </div>
+            </div>
+            
+            <!-- Imagen 6 - Reemplaza "imagen6.jpg" con el nombre real de tu imagen -->
+            <div class="imagen-contenedor">
+                <img src="Christian.jpg" alt="Dashboard 6" class="imagen" id="img6">
+                <div class="descripcion">
+                    <h3>Dashboard Power BI 6</h3>
+                    <p>Sexto dashboard de análisis predictivo.</p>
+                    <span class="estado-imagen no-cargada" id="estado6">Esperando imagen...</span>
+                </div>
+            </div>
+            
+            <!-- Imagen 7 - Reemplaza "imagen7.jpg" con el nombre real de tu imagen -->
+            <div class="imagen-contenedor">
+                <img src="Vacante.jpg" alt="Dashboard 7" class="imagen" id="img7">
+                <div class="descripcion">
+                    <h3>Dashboard Power BI 7</h3>
+                    <p>Séptimo dashboard de resumen general.</p>
+                    <span class="estado-imagen no-cargada" id="estado7">Esperando imagen...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Galería de 7 imágenes locales &copy; 2023 - Imágenes desde: C:\Users\dgonzalezfl\Desktop\DASHBOARDS-POWERBI</p>
+    </footer>
+    
+    <script>
+        // Función para verificar si las imágenes se cargaron correctamente
+        function verificarImagenes() {
+            for (let i = 1; i <= 7; i++) {
+                const img = document.getElementById(`img${i}`);
+                const estado = document.getElementById(`estado${i}`);
+                
+                if (img.complete && img.naturalWidth > 0) {
+                    estado.textContent = "✓ Imagen cargada";
+                    estado.className = "estado-imagen cargada";
+                } else {
+                    estado.textContent = "✗ Imagen no encontrada";
+                    estado.className = "estado-imagen no-cargada";
+                    
+                    // Intentar cargar la imagen
+                    img.onload = function() {
+                        estado.textContent = "✓ Imagen cargada";
+                        estado.className = "estado-imagen cargada";
+                    };
+                    
+                    img.onerror = function() {
+                        estado.textContent = "✗ No se pudo cargar la imagen";
+                        estado.className = "estado-imagen no-cargada";
+                    };
+                    
+                    // Forzar recarga
+                    img.src = img.src;
+                }
+            }
+        }
+        
+        // Función para probar todas las imágenes
+        function probarTodasLasImagenes() {
+            alert("Verificando el estado de las 7 imágenes...");
+            verificarImagenes();
+            
+            // Contar imágenes cargadas
+            setTimeout(() => {
+                const cargadas = document.querySelectorAll('.cargada').length;
+                alert(`Se cargaron correctamente ${cargadas} de 7 imágenes.`);
+            }, 500);
+        }
+        
+        // Función para mostrar los nombres de archivo que necesitas usar
+        function mostrarNombresNecesarios() {
+            const nombres = [
+                "Alan.jpg (o .png, .gif, etc.)",
+                "Vic2.jpg (o .png, .gif, etc.)",
+                "Diana.jpg (o .png, .gif, etc.)",
+                "MAgaly.jpg (o .png, .gif, etc.)",
+                "Carlos.jpg (o .png, .gif, etc.)",
+                "Christian.jpg (o .png, .gif, etc.)",
+                "dashboard7.jpg (o .png, .gif, etc.)"
+            ];
+            
+            let mensaje = "Para que funcione esta galería, necesitas tener 7 imágenes en la misma carpeta con estos nombres (o modificar el código):\n\n";
+            nombres.forEach((nombre, index) => {
+                mensaje += `${index + 1}. ${nombre}\n`;
+            });
+            
+            mensaje += "\nGuarda este archivo HTML en: C:\\Users\\dgonzalezfl\\Desktop\\DASHBOARDS-POWERBI";
+            alert(mensaje);
+        }
+        
+        // Verificar imágenes al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esperar un momento para que las imágenes intenten cargarse
+            setTimeout(verificarImagenes, 1000);
+            
+            // Agregar efecto de clic a las imágenes
+            const contenedores = document.querySelectorAll('.imagen-contenedor');
+            contenedores.forEach((contenedor, index) => {
+                contenedor.addEventListener('click', function() {
+                    const img = this.querySelector('img');
+                    const estado = this.querySelector('.estado-imagen');
+                    
+                    if (estado.classList.contains('cargada')) {
+                        // Abrir imagen en nueva pestaña si está cargada
+                        window.open(img.src, '_blank');
+                    } else {
+                        alert(`La imagen ${index + 1} no se cargó correctamente.\n\nAsegúrate de que el archivo exista en la carpeta y tenga el nombre correcto.`);
+                    }
+                });
+            });
+        });
+        
+        // Función para actualizar nombres de imágenes
+        function actualizarNombresImagenes() {
+            const nuevosNombres = prompt(
+                "Introduce los 7 nombres de archivo separados por comas:\nEjemplo: reporte1.jpg, ventas.png, dashboard.gif, etc.",
+                "dashboard1.jpg, dashboard2.jpg, dashboard3.jpg, dashboard4.jpg, dashboard5.jpg, dashboard6.jpg, dashboard7.jpg"
+            );
+            
+            if (nuevosNombres) {
+                const nombresArray = nuevosNombres.split(',').map(nombre => nombre.trim());
+                
+                if (nombresArray.length === 7) {
+                    for (let i = 1; i <= 7; i++) {
+                        const img = document.getElementById(`img${i}`);
+                        img.src = nombresArray[i-1];
+                        
+                        // Actualizar el estado
+                        const estado = document.getElementById(`estado${i}`);
+                        estado.textContent = "↻ Actualizando...";
+                        estado.className = "estado-imagen no-cargada";
+                    }
+                    
+                    alert("Nombres actualizados. Verifica el estado de las imágenes.");
+                    setTimeout(verificarImagenes, 1000);
+                } else {
+                    alert("Debes introducir exactamente 7 nombres de archivo separados por comas.");
+                }
+            }
+        }
+        
+        // Agregar botón para actualizar nombres dinámicamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const botonesDiv = document.querySelector('.botones');
+            const botonActualizar = document.createElement('button');
+            botonActualizar.className = 'boton';
+            botonActualizar.textContent = 'Cambiar Nombres de Imágenes';
+            botonActualizar.onclick = actualizarNombresImagenes;
+            botonesDiv.appendChild(botonActualizar);
+        });
+    </script>
+</body>
+</html>
